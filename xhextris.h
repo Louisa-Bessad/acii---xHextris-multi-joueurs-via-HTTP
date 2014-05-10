@@ -228,6 +228,6 @@ extern void xhextrisAddNRowInBottom(XPropertyEvent *event);
 extern char* getParametre(char *param,char *message);
 extern char* getAddrIP(char *str);
 extern char* getLogin(char *str);
-extern void addBottomLines(char *color, int nb_lines);
-extern int searchColor(char * color);
+extern void addBottomLines(char *couleur, int nb_lines);
+extern int searchColor(char * couleur);
 extern int posC(const char *s, char c);

@@ -138,11 +138,11 @@ void xhextrisAddNRowInBottom(XPropertyEvent *event){
   }
 
   int nb_lines = atoi(getParametre("nb_lines=",data[0]));
-  char *color = getParametre("color=",data[0]);
+  char *couleur = getParametre("couleur=",data[0]);
   /*char *ip = getAddrIP(data[0]);
     char *login = getLogin(data[0]);*/
 
-  addBottomLines(color,nb_lines);
+  addBottomLines(couleur,nb_lines);
 
   XGrabServer(dpy);
   XSetSelectionOwner(dpy, xhextris_querry_string , wincur, CurrentTime);
@@ -185,7 +185,7 @@ char* getLogin(char *str){
   return login;
 }
 
-void addBottomLines(char *color, int nb_lines){
+void addBottomLines(char *couleur, int nb_lines){
   int line;
   int row;
   int position;
@@ -210,7 +210,7 @@ void addBottomLines(char *color, int nb_lines){
     for (row = 0; row < MAXCOLUMN; row++) {
       unsigned char *p=&grid[line][row];
       if(row != position)
-        *p=searchColor(color);
+        *p=searchColor(couleur);
       else
         *p=NOPIECE;
       xhextrisHex(line,row,*p);
@@ -218,14 +218,14 @@ void addBottomLines(char *color, int nb_lines){
   }
 }
 
-int searchColor(char * color){
-  if(color){
-    char color_buf[25];
-    strcpy(color_buf,color);
-    strcat(color_buf,"1");
+int searchColor(char * couleur){
+  if(couleur){
+    char couleur_buf[25];
+    strcpy(couleur_buf,couleur);
+    strcat(couleur_buf,"1");
     int i;
     for(i=0;i<NUMBEROFPIECES+2;i++){
-      if(strcmp(color_buf,PieceNamedColors[i])==0){
+      if(strcmp(couleur_buf,PieceNamedColors[i])==0){
         return i;
       }
     }

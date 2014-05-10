@@ -612,14 +612,12 @@ int main(int argc, char **argv)
 	break;
 
       case 'F':
-	fprintf(stderr, "-F, optarg: %p\n", optarg);
 	fontdir = strdup(optarg);
 	options_pos += 2;
 	break;
 
       /* Traitement d'une nouvelle option: background_color */
       case 'b':
-	fprintf(stderr, "-b, optarg: %p\n", optarg);
 	background_color = strdup(optarg);
 	options_pos += 2;
 	break;
@@ -638,9 +636,7 @@ int main(int argc, char **argv)
     ip_list->login = (char*) malloc (256);
 		
     
-    //fprintf(stderr, "STRSEP1\n");
     strcpy(ip_list->ip, strsep(&argv[j],"/"));
-    //fprintf(stderr, "STRSEP2\n");
     strcpy(ip_list->login, strsep(&argv[j],"/"));
 		
     ip_list->score=0;
@@ -659,13 +655,14 @@ int main(int argc, char **argv)
     exit(100);
   }
     
-  /* Récupération BD */
+  /* Récupération BD */ 
+  XrmInitialize();
   if(XResourceManagerString(dpy)){
-    xrm_database = XrmGetStringDatabase(XResourceManagerString(dpy));
+    xrm_database = XrmGetStringDatabase(XResourceManagerString(dpy));    
   }
 
   /* Aplication de la couleur de fond */
-  if (background_color&&xrm_database){ 
+  if (background_color&&xrm_database){   
     XrmPutStringResource(&xrm_database, "xhextris.background",background_color);
   }
     

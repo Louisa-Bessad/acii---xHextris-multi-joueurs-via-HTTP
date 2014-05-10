@@ -20,7 +20,6 @@ int xhextrisColors(int numberofpieces){
     }
 			  
     for (i=1;i<=numberofpieces+1;i++){
-      /*sprintf(type,"xhextris.color.%d",i); A VIRER SI PAS BESOIN*/
       if (XrmGetResource(xrm_database,type,type, return_type, &value)) {
 	PieceNamedColors[i] = (void *)malloc(value.size+1);
 	strncpy(PieceNamedColors[i], value.addr, value.size);

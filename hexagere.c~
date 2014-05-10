@@ -1,0 +1,45 @@
+#include "xhextris.h"
+#include <time.h>
+int main(int argc, char **argv){
+
+	Display *dpy =  NULL;
+	
+	int randValue;
+	int numWindow;
+	
+	if(argc != 2){
+		fprintf(stderr, "usage: %s [num]\n", argv[0]);
+		exit(-1);
+	}
+	
+	numWindow = atoi(argv[1]);
+	dpy = XOpenDisplay(NULL);
+	
+	if (!dpy) {
+		fprintf(stderr, "Erreur dpy\n");
+		exit(-1);
+	}
+	
+	XEvent e;
+	e.type = KeyPress;
+	e.xkey.window = (Window) numWindow;
+	e.xkey.display = dpy;
+	e.xkey.type = KeyPress;
+	e.xkey.state = 0x10;
+	e.xkey.keycode = 0x58;
+
+	srandom(time(NULL));
+	
+	while(1){
+	
+		randValue = random()%15;
+		sleep(randValue);
+		printf("Perturbation du client\n");
+		XSendEvent(dpy,(Window)numWindow, False, KeyPressMask,&e);
+		XFlush(dpy);
+		
+	}
+	
+	return 0;
+
+}
