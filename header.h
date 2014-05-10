@@ -22,12 +22,11 @@
  * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  * PERFORMANCE OF THIS SOFTWARE.
  */
-
+#include <stdlib.h>
 #include <stdio.h>
 #include <strings.h>
 #include <sys/types.h>
 #include <sys/dir.h>
-#include <sys/time.h>
 #include <sys/time.h>
 #include <pwd.h>
 #include <unistd.h>
@@ -37,6 +36,21 @@
 #include <X11/Xutil.h>
 #include <X11/Xlib.h>
 #include <X11/Xresource.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h> 
+
+/* initConnexion */
+#define DEFAULTVERSION "HTTP/1.1"
+#define DEFAULTSERVER "127.0.0.1"
+#define DEFAULTPROTOCOL "http"
+#define DEFAULTSCRIPT "SurVersion.php"
+#define CLENGTH "Content-Length: "
+#define CTYPE "Content-Type: "
+#define CT_AXWFU "application/x-www-form-urlencoded"
+#define CT_MFD "multipart/form-data"
+#define LINELENGTH 512
 
 /* Nombre de pièces */
 #define NUMBEROFPIECES 10
@@ -121,6 +135,16 @@ typedef struct high_score_s
     int rows;
     int pieces;
 } high_score_t;
+
+typedef struct listIP{       
+	char *login;
+	char *ip;
+	char *color;   
+	unsigned long score;
+	struct listIP *next;
+} listIP;
+
+#define WINDOWSCOREWIDTH 200
 
 #ifdef DEBUG
 #define DEBUGPRINT(x) {printf x;fflush(NULL);}

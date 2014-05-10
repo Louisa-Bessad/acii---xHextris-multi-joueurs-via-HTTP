@@ -23,11 +23,10 @@
  * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  * PERFORMANCE OF THIS SOFTWARE.
  */
-
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/dir.h>
-#include <sys/time.h>
 #include <sys/time.h>
 #include <pwd.h>
 #include <unistd.h>
@@ -37,6 +36,21 @@
 #include <X11/Xutil.h>
 #include <X11/Xlib.h>
 #include <X11/Xresource.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h> 
+
+/* initConnexion */
+#define DEFAULTVERSION "HTTP/1.1"
+#define DEFAULTSERVER "127.0.0.1"
+#define DEFAULTPROTOCOL "http"
+#define DEFAULTSCRIPT "SurVersion.php"
+#define CLENGTH "Content-Length: "
+#define CTYPE "Content-Type: "
+#define CT_AXWFU "application/x-www-form-urlencoded"
+#define CT_MFD "multipart/form-data"
+#define LINELENGTH 512
 
 /* Nombre de pièces */
 #define NUMBEROFPIECES 10
@@ -122,6 +136,16 @@ typedef struct high_score_s
     int pieces;
 } high_score_t;
 
+typedef struct listIP{       
+	char *login;
+	char *ip;
+	char *color;   
+	unsigned long score;
+	struct listIP *next;
+} listIP;
+
+#define WINDOWSCOREWIDTH 200
+
 #ifdef DEBUG
 #define DEBUGPRINT(x) {printf x;fflush(NULL);}
 #else
@@ -157,6 +181,9 @@ extern void do_choice(char choice, piece_t *npiece, piece_t *piece);
 extern void redraw_game(piece_t *npiece, piece_t *piece);
 extern void new_game(piece_t *npiece, piece_t *piece);
 extern void choose_choice(int go, piece_t *npiece, piece_t *piece);
+extern int InitConnexion(char *serveur, int port);
+extern void sendGeneClientRequests();
+extern void double_speed();
 extern int main(int argc, char **argv);
 extern char log_name [MAXUSERIDLENGTH];
 extern void read_user();
@@ -176,9 +203,15 @@ extern Pixmap white;
 extern XColor PieceColors[NUMBEROFPIECES+2];
 extern char *PieceNamedColors[NUMBEROFPIECES+2];
 extern char *help[] ;
+extern listIP *list_IP;
+extern XrmDatabase xrm_database;
+extern int nb_joueurs;
+extern Atom xhextris_querry_string;
+extern int cleared_rows;
+extern Window window_score;
+extern Atom xhextris_score;
 extern char xhextrisEvent ();
 extern int xhextrisColors(int numberofpieces);
-extern void xhextrisCurtain(unsigned char grid[MAXROW][MAXCOLUMN]);
 extern void xhextrisEnd(int n);
 extern void xhextrisScores(int score, int rows);
 extern void xhextrisHex(int row, int column, int type) ;
@@ -189,3 +222,12 @@ extern int xhextrisInit(char *argv[], int argc);
 extern char xhextrisExposeEvent(XExposeEvent *ev);
 extern char xhextrisKeyPress(XKeyPressedEvent *ev);
 extern char xhextrisButtonPress(XButtonEvent *ev);
+extern char xhextrisNotifyProperty(XPropertyEvent *event);
+extern void xhextrisScore(XPropertyEvent *event);
+extern void xhextrisAddNRowInBottom(XPropertyEvent *event);
+extern char* getParametre(char *param,char *message);
+extern char* getAddrIP(char *str);
+extern char* getLogin(char *str);
+extern void addBottomLines(char *color, int nb_lines);
+extern int searchColor(char * color);
+extern int posC(const char *s, char c);

@@ -18,6 +18,8 @@ int xhextrisInit(char *argv[], int argc)
 			    WINDOWIDTH,
 			    (MAXROW+8)*HEXWIDTH,
 			    0, white, black);
+			    
+  printf("Window: %d\n",(int)win);
 
   wincur = XCreateSimpleWindow(dpy, win,
 			       BORDERLENGTH, 
@@ -29,7 +31,28 @@ int xhextrisInit(char *argv[], int argc)
 			       white			       );
   XSelectInput(dpy, win,  KeyPressMask | ExposureMask );
   XSelectInput(dpy, wincur,
-	       ButtonPressMask|ButtonReleaseMask|ButtonMotionMask);
+	       ButtonPressMask|ButtonReleaseMask|ButtonMotionMask|PropertyChangeMask);
+
+
+  if(nb_joueurs > 0){
+    window_score = XCreateSimpleWindow(
+          dpy,
+          DefaultRootWindow(dpy)
+          ,0,0,
+          WINDOWSCOREWIDTH,
+          (nb_joueurs+2)*HEXWIDTH,
+          0, white, black);
+    XStoreName(dpy, window_score, "Scores");
+    XMapWindow(dpy, window_score);
+  }
+
+  xhextris_querry_string = XInternAtom(dpy, "xhextris_querry_string", False);
+  xhextris_score = XInternAtom(dpy, "xhextris_score", False);
+  XGrabServer(dpy);
+  XSetSelectionOwner(dpy, xhextris_querry_string, wincur, CurrentTime);
+  XSetSelectionOwner(dpy, xhextris_score, wincur, CurrentTime);
+  XUngrabServer(dpy);
+
   XStoreName(dpy, win, WINDOWNAME);
   XMapWindow(dpy, win);
 

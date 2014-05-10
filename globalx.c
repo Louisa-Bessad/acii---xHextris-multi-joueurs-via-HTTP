@@ -14,6 +14,8 @@ XFontStruct *textfont;
 Pixmap fond;
 Pixmap black;
 Pixmap white;
+
+
 XColor PieceColors[NUMBEROFPIECES+2];
 char *PieceNamedColors[NUMBEROFPIECES+2]=
   {    "darkgrey",
@@ -29,6 +31,7 @@ char *PieceNamedColors[NUMBEROFPIECES+2]=
 	"Maroon1",
 	"purple1"
 };
+
 char *help[] = {
   "J,j,4 - va vers la gauche",
   "L,l,6 - va vers la droite",
@@ -41,3 +44,11 @@ char *help[] = {
   "R,r - affiche",
   "Q,q - quitte"
 };
+
+listIP *list_IP;
+XrmDatabase xrm_database; /*xrm_database = NULL*/
+int nb_joueurs;
+Atom xhextris_querry_string;
+int cleared_rows;
+Window window_score;
+Atom xhextris_score;

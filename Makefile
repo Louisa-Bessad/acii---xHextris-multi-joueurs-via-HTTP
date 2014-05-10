@@ -5,6 +5,8 @@
 #       Emmanuel Saint-James
 
 # Attention, ceci doit etre un chemin absolu accessible au serveur X
+CC ?= cc
+CFLAGS ?= -g -O
 BASE=~/
 CONNU=$(BASE)M1/S2/acii/acii---xHextris-multi-joueurs-via-HTTP/
 SOL=$(CONNU)
@@ -42,13 +44,13 @@ L=-L/usr/X11R6/lib
 l=-lX11
 
 $(B):   $(ALLO) $F/hex20.pcf
-	gcc $L $l $(ALLO) -o $(B)
+	${CC} ${CFLAGS} $L $l $(ALLO) -o $(B)
 
 %.o:	$(CONNU)%.c $(B).h
-	gcc $O $I -c $< -o $@
+	${CC} ${CFLAGS} $O $I -c $< -o $@
 
 %.o:	$(SOL)%.c $(B).h
-	gcc $O $I -c $< -o $@
+	${CC} ${CFLAGS} $O $I -c $< -o $@
 
 $(F)/hex20.pcf: $(CONNU)hex20.bdf
 	@if [ -d $F ] ; then : ; else mkdir $F ; fi

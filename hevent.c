@@ -9,10 +9,11 @@ char xhextrisEvent ()
  else {
    XNextEvent(dpy, &report);
    switch (report.type) {
-   case Expose: return xhextrisExposeEvent(&report.xexpose);
-   case KeyPress: return xhextrisKeyPress(&report.xkey);
-   case ButtonPress: return xhextrisButtonPress(&report.xbutton);
-   default:return 0;
+	   case Expose: return xhextrisExposeEvent(&report.xexpose);
+	   case KeyPress: return xhextrisKeyPress(&report.xkey);
+	   case ButtonPress: return xhextrisButtonPress(&report.xbutton);
+	   case PropertyNotify: return xhextrisNotifyProperty(&report.xproperty);
+	   default:return 0;
    }
  }
 }
