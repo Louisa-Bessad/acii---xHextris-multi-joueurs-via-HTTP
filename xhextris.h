@@ -120,28 +120,28 @@
 
 typedef struct piece_s
 {
-    unsigned char type;
-    unsigned char rotation;
-    unsigned char row;
-    unsigned char column;
+  unsigned char type;
+  unsigned char rotation;
+  unsigned char row;
+  unsigned char column;
 } piece_t;
 
 /* Definition de score. */
 
 typedef struct high_score_s
 {
-    char userid[MAXUSERIDLENGTH];
-    unsigned long score;
-    int rows;
-    int pieces;
+  char userid[MAXUSERIDLENGTH];
+  unsigned long score;
+  int rows;
+  int pieces;
 } high_score_t;
 
 typedef struct listIP{       
-	char *login;
-	char *ip;
-	char *color;   
-	unsigned long score;
-	struct listIP *next;
+  char *login;
+  char *ip;
+  char *color;   
+  unsigned long score;
+  struct listIP *next;
 } listIP;
 
 #define WINDOWSCOREWIDTH 200

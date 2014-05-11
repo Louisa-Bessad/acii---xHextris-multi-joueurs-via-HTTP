@@ -11,7 +11,7 @@ int xhextrisColors(int numberofpieces){
   char *return_type[64];
   
   if (xrm_database){
-    /* background_color exists */
+    /*Q1: background_color exists */
     if (XrmGetResource(xrm_database,"xhextris.background","xhextris.background",return_type, &value)) {
       PieceNamedColors[0] = (char *) malloc (value.size+1);
       strncpy(PieceNamedColors[0], value.addr, value.size);   

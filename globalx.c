@@ -19,18 +19,18 @@ Pixmap white;
 XColor PieceColors[NUMBEROFPIECES+2];
 char *PieceNamedColors[NUMBEROFPIECES+2]=
   {    "darkgrey",
-	"Orange1",
-	"red1",
-	"blue1",
-	"green1",
-	"yellow1",
-	"chocolate1",
-	"SteelBlue1",
-	"Plum1",
-	"pink1",
-	"Maroon1",
-	"purple1"
-};
+       "Orange1",
+       "red1",
+       "blue1",
+       "green1",
+       "yellow1",
+       "chocolate1",
+       "SteelBlue1",
+       "Plum1",
+       "pink1",
+       "Maroon1",
+       "purple1"
+  };
 
 char *help[] = {
   "J,j,4 - va vers la gauche",
@@ -45,10 +45,10 @@ char *help[] = {
   "Q,q - quitte"
 };
 
-listIP *list_IP;
-XrmDatabase xrm_database; /*xrm_database = NULL*/
+listIP *list_IP; /* Q1 */
+XrmDatabase xrm_database; /* Q1 */
 int nb_joueurs;
-Atom xhextris_querry_string;
+Atom xhextris_querry_string;/* Q3 Contient la query string, l'addresseIP de l'emetteur et son login*/
 int cleared_rows;
-Window window_score;
-Atom xhextris_score;
+Window window_score; /*Q5 Fenetre qui affichera le score des autres joueurs */
+Atom xhextris_score; 

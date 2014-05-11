@@ -7,7 +7,7 @@ int xhextrisInit(char *argv[], int argc)
 
   if (! (dpy = XOpenDisplay(NULL))) {
     fprintf(stderr, "%s: dispositif %s injoignable\n", argv[0],
-              XDisplayName(NULL));
+	    XDisplayName(NULL));
     exit(-1);
   }
 
@@ -33,15 +33,16 @@ int xhextrisInit(char *argv[], int argc)
   XSelectInput(dpy, wincur,
 	       ButtonPressMask|ButtonReleaseMask|ButtonMotionMask|PropertyChangeMask);
 
-
+  /* Q3 */
+  /* Window score creation */
   if(nb_joueurs > 0){
     window_score = XCreateSimpleWindow(
-          dpy,
-          DefaultRootWindow(dpy)
-          ,0,0,
-          WINDOWSCOREWIDTH,
-          (nb_joueurs+2)*HEXWIDTH,
-          0, white, black);
+				       dpy,
+				       DefaultRootWindow(dpy)
+				       ,0,0,
+				       WINDOWSCOREWIDTH,
+				       (nb_joueurs+2)*HEXWIDTH,
+				       0, white, black);
     XStoreName(dpy, window_score, "Scores");
     XMapWindow(dpy, window_score);
   }

@@ -5,17 +5,18 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
+/* Q3 */
 int main (int argc, char *argv[]){  
    
-   Display *dpy;
-   Window window_dest;
-   Atom xhextris_querry_string;
+  Display *dpy;
+  Window window_dest;
+  Atom xhextris_querry_string;
    
-   char buf[256];
-   printf ("Content-type: text/html\n");
-   strcpy(buf,getenv ("QUERY_STRING"));
-   strcat(buf," ");
-   strcat(buf,getenv ("REMOTE_ADDR"));
+  char buf[256];
+  printf ("Content-type: text/html\n");
+  strcpy(buf,getenv ("QUERY_STRING"));
+  strcat(buf," ");
+  strcat(buf,getenv ("REMOTE_ADDR"));
   
   if (!(dpy = XOpenDisplay(NULL))) {
     printf("unreachable host\n");
@@ -27,15 +28,15 @@ int main (int argc, char *argv[]){
   window_dest = XGetSelectionOwner(dpy, xhextris_querry_string); 
   XSetSelectionOwner(dpy, xhextris_querry_string, 0, CurrentTime); 
   XUngrabServer(dpy);
-  printf("Window window_dest:%d\n",(int) window_dest);
+  printf("Window dest:%d\n",(int) window_dest);
   XChangeProperty(dpy,
-  	window_dest,
-  	xhextris_querry_string,
-  	XA_STRING,
-  	8,
-  	PropModeReplace,
-  	buf,
-  	strlen(buf));
+		  window_dest,
+		  xhextris_querry_string,
+		  XA_STRING,
+		  8,
+		  PropModeReplace,
+		  buf,
+		  strlen(buf));
   XFlush(dpy);
 
   return (EXIT_SUCCESS);

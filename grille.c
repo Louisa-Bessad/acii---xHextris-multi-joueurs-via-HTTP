@@ -479,6 +479,7 @@ void choose_choice(int go, piece_t *npiece, piece_t *piece)
   do_choice((go) ? 'n' : com[((int)random()) % 6], npiece, piece);
 }
 
+/* Q1 */
 int InitConnexion(char *serveur, int port)
 {
   int sock;
@@ -489,10 +490,10 @@ int InitConnexion(char *serveur, int port)
   int i;
   int error;
 
-  struct addrinfo addrHints, *addrRes; /* adresses désirées / récupérées */
-  struct addrinfo *addrTmp;    /*adresse temporaire*/
+  struct addrinfo addrHints, *addrRes;
+  struct addrinfo *addrTmp;   
 
-  sprintf(s_port,"%i",port);  /*conversion du no de port en chaine de char*/
+  sprintf(s_port,"%i",port);  /*convert the port in a string*/
   memset(&addrHints, 0, sizeof(addrHints)); 
   addrHints.ai_family = AF_INET;  
   addrHints.ai_socktype = SOCK_STREAM;
@@ -504,6 +505,7 @@ int InitConnexion(char *serveur, int port)
     exit (EXIT_FAILURE);
   }
   i=0;
+
   /* searching for IP serveur */
   for (addrTmp = addrRes; addrTmp; addrTmp = addrTmp->ai_next) {
     i++;
@@ -515,6 +517,7 @@ int InitConnexion(char *serveur, int port)
     else
       printf("\t%s\n", buf);
   }
+
   /* connection  with the first socket */
   sock = -1;
   for (addrTmp = addrRes; addrTmp; addrTmp = addrTmp->ai_next) {
@@ -535,17 +538,20 @@ int InitConnexion(char *serveur, int port)
   return sock;
 }
 
+/* Q2 */
 void sendGeneClientRequests(){
-  listIP * list = list_IP;
   int sock;
+  listIP *list = list_IP;
   char request[1024];
+
   while(list){     
     sock = InitConnexion(list->ip,80);
     if (sock){
       sprintf(request,"GET /~%s/cgi-bin/relais_lignes?nombre_de_lignes=%d&couleur=%s HTTP/1.0\n",list->login,cleared_rows,PieceNamedColors[0]);
       printf("send resquest : %s",request);
+
       if(!write(sock,request,strlen(request))){
-        printf("Erreur avec la socket du client %s\n",list->login);
+        printf("Socket Client Error %s\n",list->login);
         exit(1);
       }
       close(sock);
@@ -555,9 +561,9 @@ void sendGeneClientRequests(){
 }
 
 
-/* Augmentation de la vitesse par 2 */
+/* Q2: Augmentation de la vitesse par 2 */
 void double_speed(){
-  speed *= 2;
+  speed = 2 * speed;
 }
 
 /* La boucle principale */
@@ -575,8 +581,8 @@ int main(int argc, char **argv)
   char opt;
 
   /* Variables supp */
-  char * background_color = NULL;
-  listIP * ip_list = NULL;
+  char *background_color = NULL;
+  listIP *ip_list = NULL;
   int options_pos = 1;
   int j;
     
@@ -598,10 +604,8 @@ int main(int argc, char **argv)
       {NULL, 0, NULL, 0}
     };
 
-    //fprintf(stderr, "LALALALALALA\n");
 
     while ((opt = getopt_long (argc, argv, "haF:b:", options, NULL)) != -1)
-      //fprintf(stderr, "GETOOOOOOOOOOOOOOOOOOPT\n");
       switch(opt){
       case 'h':
 	printf(help_msg, argv[0]);
@@ -616,7 +620,7 @@ int main(int argc, char **argv)
 	options_pos += 2;
 	break;
 
-      /* Traitement d'une nouvelle option: background_color */
+	/* Q1: Traitement d'une nouvelle option: background_color */
       case 'b':
 	background_color = strdup(optarg);
 	options_pos += 2;
@@ -628,14 +632,13 @@ int main(int argc, char **argv)
   }// FIN traitement des options
 	
 
-  /* Récupération des couples IP/login */
+  /* Q1: Récupération des couples IP/login */
   for(j=options_pos;j<argc;j++){
     ip_list = malloc(sizeof(listIP));
 		
-    ip_list->ip = (char*) malloc (256);
-    ip_list->login = (char*) malloc (256);
+    ip_list->ip = (char*)malloc(256);
+    ip_list->login = (char*)malloc(256);
 		
-    
     strcpy(ip_list->ip, strsep(&argv[j],"/"));
     strcpy(ip_list->login, strsep(&argv[j],"/"));
 		
@@ -655,17 +658,24 @@ int main(int argc, char **argv)
     exit(100);
   }
     
-  /* Récupération BD */ 
+  /* Q1: Récupération BD */ 
   XrmInitialize();
   if(XResourceManagerString(dpy)){
     xrm_database = XrmGetStringDatabase(XResourceManagerString(dpy));    
   }
 
-  /* Aplication de la couleur de fond */
-  if (background_color&&xrm_database){   
-    XrmPutStringResource(&xrm_database, "xhextris.background",background_color);
+  /* Q1: Aplication de la couleur de fond */
+  if (xrm_database){
+    if (background_color){   
+      XrmPutStringResource(&xrm_database, "xhextris.background", background_color);
+    }
+    else
+      printf("no background_color\n");
   }
+  else
+    printf("no xrm_database\n");
     
+
   // creation des couleurs si possible
   i = xhextrisColors(NUMBEROFPIECES);
   if (i) xhextrisEnd(i);
@@ -695,11 +705,10 @@ int main(int argc, char **argv)
     }
     if (autom) choose_choice(game_over,&npiece,&piece);
     if (!game_over) update_drop(&npiece,&piece);
+    /*Q4: Gestion of GeneLines for clients */
     if (cleared_rows){
-      /* Gestion des lignes de Gene pour les clients */
       sendGeneClientRequests();
     }
-
     if (game_over && !saved) {
       if (is_high_score(score, rows, total_pieces, high_scores))
 	write_high_scores(high_scores);

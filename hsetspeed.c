@@ -14,7 +14,7 @@ int xhextrisSetspeed(int w)
   if (w<=0)
     w=1;
   else { if (w> (COORDCOL(MAXCOLUMN+3)-BORDERLENGTH-(CURSOR_H)))
-    w=(COORDCOL(MAXCOLUMN+3)-BORDERLENGTH-(CURSOR_H));
+      w=(COORDCOL(MAXCOLUMN+3)-BORDERLENGTH-(CURSOR_H));
   }
   XClearWindow(dpy,wincur);
   XDrawImageString(dpy, wincur, hexgc, w, BORDERSUB,  "}", 1);

@@ -34,11 +34,10 @@ char xhextrisButtonPress(XButtonEvent *ev)
   return 0;
 }
 
+/* Notification de changement de propriete */
 char xhextrisNotifyProperty(XPropertyEvent *event)
 {
-  /* Add n lines */
   xhextris_querry_string = XInternAtom(dpy, "xhextris_querry_string", False);
-  /* Score */
   xhextris_score = XInternAtom(dpy, "xhextris_score", False);
   if(event->atom==xhextris_querry_string) {
     xhextrisAddNRowInBottom(event);
@@ -48,6 +47,7 @@ char xhextrisNotifyProperty(XPropertyEvent *event)
   return 0;
 }
 
+/* Window score gestion Q5*/
 void xhextrisScore(XPropertyEvent *event){
 
   Atom cur_type;
@@ -62,17 +62,17 @@ void xhextrisScore(XPropertyEvent *event){
   printf("xhextris score\n");
 
   status = XGetWindowProperty(dpy,
-    wincur,
-    xhextris_score,
-    0,         
-    64,        
-    False,     
-    AnyPropertyType,  
-    &cur_type,
-    &cur_format,
-    &nb_items,
-    &bytes,       
-    data);
+			      wincur,
+			      xhextris_score,
+			      0,         
+			      64,        
+			      False,     
+			      AnyPropertyType,  
+			      &cur_type,
+			      &cur_format,
+			      &nb_items,
+			      &bytes,       
+			      data);
 
   if (status != Success) {
     fprintf(stderr, "status = %d\n", status);
@@ -120,17 +120,17 @@ void xhextrisAddNRowInBottom(XPropertyEvent *event){
   printf("xhextris add row in bottom\n");
 
   status = XGetWindowProperty(dpy,
-    wincur,
-    xhextris_querry_string,
-    0,         
-    64,        
-    False,     
-    AnyPropertyType,  
-    &cur_type,
-    &cur_format,
-    &nb_items,
-    &bytes,       
-    data);
+			      wincur,
+			      xhextris_querry_string,
+			      0,         
+			      64,        
+			      False,     
+			      AnyPropertyType,  
+			      &cur_type,
+			      &cur_format,
+			      &nb_items,
+			      &bytes,       
+			      data);
 
   if (status != Success) {
     fprintf(stderr, "status = %d\n", status);
@@ -139,8 +139,6 @@ void xhextrisAddNRowInBottom(XPropertyEvent *event){
 
   int nb_lines = atoi(getParametre("nb_lines=",data[0]));
   char *couleur = getParametre("couleur=",data[0]);
-  /*char *ip = getAddrIP(data[0]);
-    char *login = getLogin(data[0]);*/
 
   addBottomLines(couleur,nb_lines);
 
@@ -158,11 +156,11 @@ char* getParametre(char *param,char *message){
     p = strstr(message,param);
     p = p + strlen(param);
     while(*p!=' ')
-    {
-       buf[nb_char] = *p;
-       p++;
+      {
+	buf[nb_char] = *p;
+	p++;
         nb_char++;
-    }
+      }
   }
   buf[nb_char] = '\0';
   return buf;
@@ -191,7 +189,7 @@ void addBottomLines(char *couleur, int nb_lines){
   int position;
   char *p;
   char *q;
-  /* Toutes les cellules de 0 à  MAXROW - nb_lignes sont remontées */
+  /* Up the cells range from 0 to  MAXROW - nb_lines */
   for (line = 0; line < MAXROW - nb_lines; line++){
     for (row = 0; row < MAXCOLUMN; row++) {
       p=&grid[line][row];
@@ -204,7 +202,6 @@ void addBottomLines(char *couleur, int nb_lines){
   }
 
   srand(time(NULL));
-  /* Ajout des trous et NO_PIECE */
   for (line = MAXROW - nb_lines; line <MAXROW; line++){
     position = random()%MAXCOLUMN;
     for (row = 0; row < MAXCOLUMN; row++) {
@@ -218,7 +215,7 @@ void addBottomLines(char *couleur, int nb_lines){
   }
 }
 
-int searchColor(char * couleur){
+int searchColor(char *couleur){
   if(couleur){
     char couleur_buf[25];
     strcpy(couleur_buf,couleur);
