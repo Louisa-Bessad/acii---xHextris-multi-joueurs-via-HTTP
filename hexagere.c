@@ -22,7 +22,7 @@ int main(int argc, char **argv){
 	
   XEvent event;
   event.type = KeyPress;
-  event.xkey.window = (Window) numWindow;
+  event.xkey.window = (Window) window_number;
   event.xkey.display = dpy;
   event.xkey.type = KeyPress;
   event.xkey.state = 0x10;
@@ -36,7 +36,7 @@ int main(int argc, char **argv){
     rand_value = random()%15;
     sleep(rand_value);
     printf("Mauvais Génie Hexagonal\n");
-    XSendEvent(dpy,(Window)numWindow, False, KeyPressMask,&event);
+    XSendEvent(dpy,(Window)window_number, False, KeyPressMask,&event);
     XFlush(dpy);
 		
   }

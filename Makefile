@@ -65,8 +65,13 @@ test:
 raz:
 	rm -rf $(ALLO) $(B) $(B).h $F
 
+other:
+	gcc $I -o hexagere hexagere.c ${L} ${l}
+	gcc $I -o relais_lignes relais_lignes.c  ${L} ${l}
+
 # Construction automatique du .h en fonction de l'evolution des fichiers
 # Si rien de neuf, reprendre le vieux pour ne pas recompiler a chaque fois
+
 
 $(B).h: $(CONNU)$(H) $(M) $(ALLD) $(ALLS)
 	@if [ -f $@ ] ; then mv $@ $@.old ; else > $@.old ;  fi

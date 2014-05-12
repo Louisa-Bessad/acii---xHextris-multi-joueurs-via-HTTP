@@ -41,7 +41,7 @@
 #include <arpa/inet.h>
 #include <netdb.h> 
 
-/* initConnexion */
+/* InitConnexion */
 #define DEFAULTVERSION "HTTP/1.1"
 #define DEFAULTSERVER "127.0.0.1"
 #define DEFAULTPROTOCOL "http"
@@ -126,8 +126,7 @@ typedef struct piece_s
   unsigned char column;
 } piece_t;
 
-/* Definition de score. */
-
+/* Score definition */
 typedef struct high_score_s
 {
   char userid[MAXUSERIDLENGTH];
@@ -136,6 +135,7 @@ typedef struct high_score_s
   int pieces;
 } high_score_t;
 
+/* Identifiant structure */
 typedef struct listIP{       
   char *login;
   char *ip;
@@ -212,6 +212,7 @@ extern Window window_score;
 extern Atom xhextris_score;
 extern char xhextrisEvent ();
 extern int xhextrisColors(int numberofpieces);
+extern void xhextrisCurtain(unsigned char grid[MAXROW][MAXCOLUMN]);
 extern void xhextrisEnd(int n);
 extern void xhextrisScores(int score, int rows);
 extern void xhextrisHex(int row, int column, int type) ;
@@ -229,5 +230,5 @@ extern char* getParametre(char *param,char *message);
 extern char* getAddrIP(char *str);
 extern char* getLogin(char *str);
 extern void addBottomLines(char *couleur, int nb_lines);
-extern int searchColor(char * couleur);
+extern int searchColor(char *couleur);
 extern int posC(const char *s, char c);
